@@ -1,9 +1,10 @@
 #!/bin/sh
 set -eu
 
-VERSION=1.0.1
+VERSION=1.1.0
 APP_ROOT=/mnt/data/rom-library
 APP_BIN="$APP_ROOT/bin"
+LICENSE_ROOT="$APP_ROOT/licenses/7zip"
 APPS_ROOT=/mnt/mmc/Roms/APPS
 LAUNCHER="$APPS_ROOT/ROM Library.sh"
 ARTWORK="$APPS_ROOT/Imgs/ROM Library.png"
@@ -19,7 +20,6 @@ fail() {
 grep -q 'RG35xxPRO' /mnt/vendor/oem/board.ini || fail 'This package supports only the Anbernic RG35XX Pro stock firmware.'
 [ -d /mnt/mmc/Roms ] || fail 'Stock ROM storage was not found at /mnt/mmc/Roms.'
 command -v python3 >/dev/null 2>&1 || fail 'python3 is missing from this firmware.'
-command -v unzip >/dev/null 2>&1 || fail 'unzip is missing from this firmware.'
 command -v sha256sum >/dev/null 2>&1 || fail 'sha256sum is missing from this firmware.'
 
 cd "$PACKAGE_DIR"
@@ -28,25 +28,34 @@ missing=$(ldd bin/rom-library 2>&1 | grep 'not found' || true)
 [ -z "$missing" ] || fail "Firmware compatibility check failed: $missing"
 python3 bin/romlib_helper.py --version | grep -qx "$VERSION" || fail 'Helper version check failed.'
 bin/rom-library --version | grep -q "$VERSION" || fail 'Application version check failed.'
+bin/7zzs i | grep -q '7-Zip (z) 26.02 (arm64)' || fail 'Archive extractor compatibility check failed.'
 
-mkdir -p "$APP_BIN" "$APP_ROOT/logs" "$APPS_ROOT/Imgs"
+mkdir -p "$APP_BIN" "$APP_ROOT/logs" "$LICENSE_ROOT" "$APPS_ROOT/Imgs"
 stamp=$(date +%Y%m%d-%H%M%S)
 backup="$APP_ROOT/backups/$stamp"
-if [ -e "$APP_BIN/rom-library" ] || [ -e "$APP_BIN/romlib_helper.py" ] || [ -e "$LAUNCHER" ] || [ -e "$ARTWORK" ]; then
+if [ -e "$APP_BIN/rom-library" ] || [ -e "$APP_BIN/romlib_helper.py" ] || [ -e "$APP_BIN/7zzs" ] || [ -e "$LAUNCHER" ] || [ -e "$ARTWORK" ]; then
     mkdir -p "$backup"
     [ ! -e "$APP_BIN/rom-library" ] || cp -p "$APP_BIN/rom-library" "$backup/rom-library"
     [ ! -e "$APP_BIN/romlib_helper.py" ] || cp -p "$APP_BIN/romlib_helper.py" "$backup/romlib_helper.py"
+    [ ! -e "$APP_BIN/7zzs" ] || cp -p "$APP_BIN/7zzs" "$backup/7zzs"
     [ ! -e "$LAUNCHER" ] || cp -p "$LAUNCHER" "$backup/ROM Library.sh"
     [ ! -e "$ARTWORK" ] || cp -p "$ARTWORK" "$backup/ROM Library.png"
 fi
 
 tmp_bin="$APP_BIN/.rom-library.new.$$"
 tmp_helper="$APP_BIN/.romlib-helper.new.$$"
+tmp_extractor="$APP_BIN/.7zzs.new.$$"
 cp bin/rom-library "$tmp_bin"
 cp bin/romlib_helper.py "$tmp_helper"
-chmod 0755 "$tmp_bin" "$tmp_helper"
+cp bin/7zzs "$tmp_extractor"
+chmod 0755 "$tmp_bin" "$tmp_helper" "$tmp_extractor"
 mv -f "$tmp_bin" "$APP_BIN/rom-library"
 mv -f "$tmp_helper" "$APP_BIN/romlib_helper.py"
+mv -f "$tmp_extractor" "$APP_BIN/7zzs"
+cp licenses/7zip/License.txt "$LICENSE_ROOT/License.txt"
+cp licenses/7zip/readme.txt "$LICENSE_ROOT/readme.txt"
+cp licenses/7zip/ORIGIN.md "$LICENSE_ROOT/ORIGIN.md"
+chmod 0644 "$LICENSE_ROOT/License.txt" "$LICENSE_ROOT/readme.txt" "$LICENSE_ROOT/ORIGIN.md"
 
 tmp_launcher="$APPS_ROOT/.ROM-Library-launcher.new.$$"
 tmp_artwork="$APPS_ROOT/Imgs/.ROM-Library-artwork.new.$$"

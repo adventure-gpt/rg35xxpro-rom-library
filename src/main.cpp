@@ -37,7 +37,7 @@
 
 namespace fs = std::filesystem;
 
-static constexpr const char *VERSION = "1.0.1";
+static constexpr const char *VERSION = "1.1.0";
 static constexpr const char *PROVIDER = "https://www.romsgames.net";
 
 static std::string envOr(const char *name, const char *fallback) {
@@ -256,16 +256,30 @@ public:
 static std::string platformFolder(const std::string &input) {
     std::string key = lower(trim(input));
     static const std::map<std::string, std::string> mapping = {
+        {"a2600", "A2600"}, {"a5200", "A5200"}, {"a7800", "A7800"}, {"a800", "A800"},
+        {"amiga", "AMIGA"}, {"commodore amiga", "AMIGA"}, {"atari st", "ATARIST"}, {"atarist", "ATARIST"},
+        {"atomiswave", "ATOMISWAVE"}, {"c64", "C64"}, {"commodore 64", "C64"},
+        {"cps1", "CPS1"}, {"cps 1", "CPS1"}, {"cps2", "CPS2"}, {"cps 2", "CPS2"}, {"cps3", "CPS3"}, {"cps 3", "CPS3"},
+        {"dos", "DOS"}, {"ms-dos", "DOS"}, {"easyrpg", "EASYRPG"}, {"fbneo", "FBNEO"}, {"finalburn neo", "FBNEO"}, {"fds", "FDS"},
         {"gba", "GBA"}, {"gameboy advance", "GBA"}, {"game boy advance", "GBA"},
         {"nds", "NDS"}, {"nintendo ds", "NDS"}, {"psp", "PSP"}, {"playstation portable", "PSP"},
         {"gb", "GB"}, {"gameboy", "GB"}, {"game boy", "GB"}, {"gbc", "GBC"}, {"gameboy color", "GBC"},
-        {"n64", "N64"}, {"nintendo 64", "N64"}, {"nes", "FC"}, {"nintendo", "FC"},
+        {"game boy color", "GBC"}, {"game & watch", "GW"}, {"game and watch", "GW"}, {"gw", "GW"},
+        {"n64", "N64"}, {"nintendo 64", "N64"}, {"nes", "FC"}, {"fc", "FC"}, {"nintendo", "FC"}, {"family computer", "FC"},
         {"snes", "SFC"}, {"super nintendo", "SFC"}, {"sfc", "SFC"}, {"genesis", "MD"}, {"mega drive", "MD"}, {"md", "MD"},
         {"dreamcast", "DREAMCAST"}, {"dc", "DREAMCAST"}, {"ps", "PS"}, {"ps1", "PS"}, {"psx", "PS"}, {"playstation", "PS"},
         {"saturn", "SATURN"}, {"game gear", "GG"}, {"gg", "GG"}, {"master system", "SMS"}, {"sms", "SMS"},
-        {"sega 32x", "SEGA32X"}, {"32x", "SEGA32X"}, {"pc engine", "PCE"}, {"turbografx-16", "PCE"},
-        {"neo geo pocket", "NGP"}, {"ngp", "NGP"}, {"atari 2600", "A2600"}, {"a2600", "A2600"},
-        {"atari 5200", "A5200"}, {"atari 7800", "A7800"}, {"lynx", "LYNX"}, {"wonder swan", "WS"}, {"wonderswan", "WS"}
+        {"sega 32x", "SEGA32X"}, {"sega32x", "SEGA32X"}, {"32x", "SEGA32X"}, {"pc engine", "PCE"}, {"pce", "PCE"}, {"turbografx-16", "PCE"}, {"turbografx 16", "PCE"},
+        {"pc engine cd", "PCECD"}, {"pce-cd", "PCECD"}, {"pcecd", "PCECD"}, {"turbografx-cd", "PCECD"}, {"turbografx cd", "PCECD"},
+        {"sega cd", "MDCD"}, {"mega cd", "MDCD"}, {"mdcd", "MDCD"}, {"msx", "MSX"},
+        {"neo geo pocket", "NGP"}, {"neo geo pocket color", "NGP"}, {"ngp", "NGP"}, {"ngpc", "NGP"},
+        {"neo geo", "NEOGEO"}, {"neogeo", "NEOGEO"}, {"neo geo cd", "NEOCD"}, {"neocd", "NEOCD"},
+        {"naomi", "NAOMI"}, {"sega naomi", "NAOMI"}, {"mame", "MAME"}, {"arcade", "MAME"}, {"hbmame", "HBMAME"},
+        {"openbor", "OPENBOR"}, {"ons", "ONS"}, {"onscripter", "ONS"}, {"scummvm", "SCUMMVM"}, {"java", "JAVA"},
+        {"pgm2", "PGM2"}, {"pico-8", "PICO"}, {"pico8", "PICO"}, {"pokemon mini", "POKE"}, {"pokemini", "POKE"},
+        {"atari 2600", "A2600"}, {"atari 5200", "A5200"}, {"atari 7800", "A7800"}, {"atari 800", "A800"},
+        {"lynx", "LYNX"}, {"atari lynx", "LYNX"}, {"virtual boy", "VB"}, {"vb", "VB"}, {"varcade", "VARCADE"}, {"vic-20", "VIC20"}, {"vic20", "VIC20"},
+        {"wonder swan", "WS"}, {"wonderswan", "WS"}, {"wonderswan color", "WS"}, {"ws", "WS"}, {"wsc", "WS"}
     };
     auto found = mapping.find(key); return found == mapping.end() ? "" : found->second;
 }
@@ -350,16 +364,26 @@ public:
 };
 
 static const std::map<std::string, std::set<std::string>> LIBRARY_EXTENSIONS = {
-    {"A2600", {".a26", ".bin", ".zip"}}, {"A5200", {".a52", ".bin", ".zip"}}, {"A7800", {".a78", ".bin", ".zip"}},
-    {"AMIGA", {".adf", ".adz", ".dms", ".hdf", ".lha", ".zip"}}, {"C64", {".d64", ".d81", ".g64", ".prg", ".t64", ".tap", ".zip"}},
-    {"DREAMCAST", {".cdi", ".chd", ".cue", ".gdi"}}, {"FC", {".nes", ".unf", ".unif", ".zip"}}, {"FDS", {".fds", ".zip"}},
-    {"GB", {".gb", ".zip"}}, {"GBA", {".gba", ".zip"}}, {"GBC", {".gbc", ".zip"}}, {"GG", {".gg", ".zip"}},
-    {"LYNX", {".lnx", ".zip"}}, {"MD", {".bin", ".gen", ".md", ".smd", ".zip"}}, {"MDCD", {".chd", ".cue", ".iso"}},
-    {"MSX", {".cas", ".dsk", ".mx1", ".mx2", ".rom", ".zip"}}, {"N64", {".n64", ".v64", ".z64", ".zip"}},
-    {"NDS", {".nds", ".zip"}}, {"NEOCD", {".chd", ".cue"}}, {"NEOGEO", {".zip"}}, {"NGP", {".ngc", ".ngp", ".zip"}},
-    {"PCE", {".pce", ".zip"}}, {"PCECD", {".chd", ".cue", ".iso"}}, {"PS", {".chd", ".cue", ".m3u", ".pbp"}},
-    {"PSP", {".cso", ".iso", ".pbp"}}, {"SATURN", {".chd", ".cue", ".iso"}}, {"SEGA32X", {".32x", ".bin", ".zip"}},
-    {"SFC", {".fig", ".sfc", ".smc", ".zip"}}, {"SMS", {".bin", ".sms", ".zip"}}, {"VB", {".vb", ".vboy", ".zip"}}, {"WS", {".ws", ".wsc", ".zip"}}
+    {"A2600", {".a26", ".bin", ".zip"}}, {"A5200", {".a52", ".zip"}}, {"A7800", {".a78", ".bin", ".zip"}}, {"A800", {".atr", ".rom", ".zip"}},
+    {"AMIGA", {".adf", ".adz", ".chd", ".cue", ".dms", ".hdf", ".hdz", ".ipf", ".iso", ".lha", ".m3u", ".uae", ".zip"}},
+    {"ATARIST", {".dim", ".ipf", ".m3u", ".msa", ".st", ".stx", ".zip"}}, {"ATOMISWAVE", {".7z", ".chd", ".cue", ".gdi", ".zip"}},
+    {"C64", {".bin", ".cmd", ".crt", ".d64", ".d71", ".d80", ".d81", ".d82", ".g41", ".g64", ".m3u", ".nbz", ".nib", ".p00", ".prg", ".t64", ".tap", ".vsf", ".x64", ".zip"}},
+    {"CPS1", {".zip"}}, {"CPS2", {".zip"}}, {"CPS3", {".zip"}}, {"DOS", {".bat", ".com", ".dosz", ".exe", ".zip"}},
+    {"DREAMCAST", {".cdi", ".chd", ".cue", ".gdi", ".iso", ".m3u", ".zip"}}, {"EASYRPG", {".ldb", ".zip"}}, {"FBNEO", {".zip"}},
+    {"FC", {".nes", ".unf", ".unif", ".zip"}}, {"FDS", {".fds", ".zip"}}, {"GB", {".gb", ".zip"}}, {"GBA", {".gba", ".zip"}},
+    {"GBC", {".gbc", ".zip"}}, {"GG", {".gg", ".zip"}}, {"GW", {".mgw"}}, {"HBMAME", {".chd", ".zip"}}, {"JAVA", {".jar"}},
+    {"LYNX", {".lnx", ".zip"}}, {"MAME", {".chd", ".zip"}}, {"MD", {".bin", ".gen", ".md", ".smd", ".zip"}},
+    {"MDCD", {".chd", ".cue", ".iso", ".m3u", ".zip"}}, {"MSX", {".cas", ".col", ".dsk", ".m3u", ".mx1", ".mx2", ".ri", ".rom", ".sc", ".sg", ".zip"}},
+    {"N64", {".bin", ".n64", ".rom", ".v64", ".z64", ".zip"}}, {"NAOMI", {".7z", ".chd", ".cue", ".gdi", ".zip"}}, {"NDS", {".nds", ".zip"}},
+    {"NEOCD", {".chd", ".cue", ".iso", ".zip"}}, {"NEOGEO", {".zip"}}, {"NGP", {".ngc", ".ngp", ".zip"}},
+    {"ONS", {".dat", ".nt", ".nt2", ".nt3", ".ons", ".txt", ".zip"}}, {"OPENBOR", {".pak"}},
+    {"PCE", {".ccd", ".chd", ".cue", ".img", ".iso", ".pce", ".zip"}}, {"PCECD", {".ccd", ".chd", ".cue", ".m3u", ".toc"}},
+    {"PGM2", {".zip"}}, {"PICO", {".p8", ".png"}}, {"POKE", {".min", ".zip"}},
+    {"PS", {".ccd", ".chd", ".cue", ".iso", ".m3u", ".mds", ".pbp", ".toc"}}, {"PSP", {".chd", ".cso", ".iso", ".pbp", ".prx"}},
+    {"SATURN", {".ccd", ".chd", ".cue", ".iso", ".mds", ".rar"}}, {"SCUMMVM", {".scummvm", ".zip"}},
+    {"SEGA32X", {".32x", ".bin", ".md", ".smd", ".zip"}}, {"SFC", {".fig", ".sfc", ".smc", ".zip"}}, {"SMS", {".bin", ".sms", ".zip"}},
+    {"VARCADE", {".zip"}}, {"VB", {".vb", ".vboy", ".zip"}}, {"VIC20", {".20", ".a0", ".b0", ".bin", ".cmd", ".crt", ".m3u", ".nbz", ".nib", ".p00", ".prg", ".t64", ".tap", ".vsf", ".x6", ".zip"}},
+    {"WS", {".ws", ".wsc", ".zip"}}
 };
 
 static std::vector<GameFile> scanLibrary(TaskState *task = nullptr) {
@@ -491,7 +515,6 @@ class App {
             ProviderClient provider; Ticket ticket = provider.ticket(result, &task_); std::string system = platformFolder(ticket.console.empty() ? result.console : ticket.console);
             if (system.empty()) throw std::runtime_error("This console is not mapped to a stock firmware ROM folder");
             { std::lock_guard<std::mutex> lock(task_.mutex); task_.ticket = ticket; }
-            for (int second = 5; second > 0; --second) { if (task_.cancel) throw std::runtime_error("Download cancelled"); taskStage(task_, "Provider countdown: " + std::to_string(second) + " seconds"); std::this_thread::sleep_for(std::chrono::seconds(1)); }
             std::string payload = provider.download(ticket, task_); taskStage(task_, "Inspecting and installing safely");
             std::string decodedName = HttpClient::decode(ticket.downloadName);
             ExecResult installed = execCapture({"python3", helperPath(), "install", "--archive", payload, "--download-name", decodedName, "--system", system, "--rom-root", romRoot()});

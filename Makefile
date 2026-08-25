@@ -10,7 +10,7 @@ build/rom-library: src/main.cpp
 	$(CXX) $(CXXFLAGS) $< $(LDLIBS) -o $@
 
 test: build/rom-library
-	python3 tests/helper_tests.py
+	ROM_LIBRARY_7ZZ=$(CURDIR)/third_party/7zip-arm64/7zzs python3 tests/helper_tests.py
 	ROM_LIBRARY_HOME=/tmp/rom-library-test ROM_LIBRARY_ROMS_ROOT=/tmp/rom-library-test/Roms ROM_LIBRARY_HELPER=$(CURDIR)/scripts/romlib_helper.py ./build/rom-library --self-test
 
 clean:
