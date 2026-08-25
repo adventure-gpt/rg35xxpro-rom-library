@@ -2,6 +2,9 @@
 
 ROM Library is a native, controller-first game browser and library manager for the Anbernic RG35XX Pro stock firmware. It searches the approved `romsgames.net` provider, displays game details, obtains the provider's normal download ticket, downloads over verified HTTPS, safely installs supported files in the stock ROM folders, and manages existing games with recoverable removal.
 
+Website: [rg35xxpro-rom-library.bryguy4.chatgpt.site](https://rg35xxpro-rom-library.bryguy4.chatgpt.site)  
+Latest release: [v1.0.1](https://github.com/adventure-gpt/rg35xxpro-rom-library/releases/tag/v1.0.1)
+
 ## What it does
 
 - Controller keyboard and provider title search
