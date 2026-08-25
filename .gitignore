@@ -1,0 +1,6 @@
+/build/
+/dist/*
+!/dist/.gitkeep
+*.bmp
+__pycache__/
+*.pyc
