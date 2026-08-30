@@ -25,8 +25,9 @@ cp "$ROOT/packaging/install.sh" "$STAGE/install.sh"
 cp "$ROOT/packaging/uninstall.sh" "$STAGE/uninstall.sh"
 cp "$ROOT/README.md" "$STAGE/README.md"
 cp "$ROOT/docs/FORMATS.md" "$STAGE/docs/FORMATS.md"
+cp "$ROOT/docs/INSTALLATION.md" "$STAGE/docs/INSTALLATION.md"
 chmod 0755 "$STAGE/bin/rom-library" "$STAGE/bin/romlib_helper.py" "$STAGE/bin/7zzs" "$STAGE/launcher/ROM Library.sh" "$STAGE/install.sh" "$STAGE/uninstall.sh"
-(cd "$STAGE" && sha256sum bin/rom-library bin/romlib_helper.py bin/7zzs 'launcher/ROM Library.sh' 'artwork/ROM Library.png' licenses/7zip/License.txt licenses/7zip/readme.txt licenses/7zip/ORIGIN.md install.sh uninstall.sh README.md docs/FORMATS.md > SHA256SUMS)
+(cd "$STAGE" && sha256sum bin/rom-library bin/romlib_helper.py bin/7zzs 'launcher/ROM Library.sh' 'artwork/ROM Library.png' licenses/7zip/License.txt licenses/7zip/readme.txt licenses/7zip/ORIGIN.md install.sh uninstall.sh README.md docs/FORMATS.md docs/INSTALLATION.md > SHA256SUMS)
 rm -f "$ARCHIVE" "$ARCHIVE.sha256"
 tar -C "$ROOT/build/release" -czf "$ARCHIVE" "$NAME"
 (cd "$ROOT/dist" && sha256sum "$(basename "$ARCHIVE")" > "$(basename "$ARCHIVE").sha256")

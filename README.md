@@ -38,6 +38,8 @@ If the stock mapping differs, open **Settings > Calibrate controller**.
 
 ## Install
 
+For a complete beginner walkthrough covering Wi-Fi, enabling the stock firmware's temporary SSH server, finding the device IP address, Windows PowerShell prompts, installation, verification, and troubleshooting, see [Easy installation guide](docs/INSTALLATION.md).
+
 Copy the release archive and its adjacent `.sha256` file to the RG35XX Pro, verify it, then extract and run:
 
 ```sh
