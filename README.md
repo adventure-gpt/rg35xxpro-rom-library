@@ -2,7 +2,8 @@
 
 ROM Library is a native, controller-first game browser and library manager for the Anbernic RG35XX Pro stock firmware. It searches the approved `romsgames.net` provider, displays game details, obtains the provider's normal download ticket, downloads over verified HTTPS, safely installs supported files in the stock ROM folders, and manages existing games with recoverable removal.
 
-Website: [rg35xxpro-rom-library.bryguy4.chatgpt.site](https://rg35xxpro-rom-library.bryguy4.chatgpt.site)  
+Website: [rg35xxpro-rom-library.pages.dev](https://rg35xxpro-rom-library.pages.dev/)
+
 Latest release: [v1.1.0](https://github.com/adventure-gpt/rg35xxpro-rom-library/releases/tag/v1.1.0)
 
 ## What it does
@@ -38,7 +39,7 @@ If the stock mapping differs, open **Settings > Calibrate controller**.
 
 ## Install
 
-For a complete beginner walkthrough covering Wi-Fi, enabling the stock firmware's temporary SSH server, finding the device IP address, Windows PowerShell prompts, installation, verification, and troubleshooting, see [Easy installation guide](docs/INSTALLATION.md).
+For a complete beginner walkthrough covering Wi-Fi, enabling the stock firmware's temporary SSH server, finding the device IP address, Windows PowerShell and macOS Terminal prompts, installation, verification, and troubleshooting, see [Easy installation guide](docs/INSTALLATION.md).
 
 Copy the release archive and its adjacent `.sha256` file to the RG35XX Pro, verify it, then extract and run:
 

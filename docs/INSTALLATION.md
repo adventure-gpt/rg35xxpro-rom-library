@@ -5,7 +5,7 @@ This guide assumes no previous SSH or Linux experience. It installs ROM Library 
 ## What you need
 
 - An Anbernic RG35XX Pro running stock firmware
-- A Windows 10 or Windows 11 computer
+- A Windows 10/11 computer or a Mac running a supported version of macOS
 - The handheld and computer connected to the same non-guest Wi-Fi network
 - About 10 minutes and at least 10 MB of free space
 
@@ -35,7 +35,9 @@ Return to **Settings > Network Settings** and write down the handheld's IP addre
 
 If the address is not shown there, start RetroArch and open **Information > Network Information**. Use the address beside `wlan0`.
 
-## 4. Open PowerShell
+## 4. Open a terminal on the computer
+
+### Windows
 
 1. Open the Windows **Start** menu.
 2. Type `PowerShell`.
@@ -43,17 +45,25 @@ If the address is not shown there, start RetroArch and open **Information > Netw
 
 If Windows later says that `ssh` is not recognized, open Windows **Optional Features**, install **OpenSSH Client**, and reopen PowerShell.
 
+### macOS
+
+1. Press **Command (⌘) + Space** to open Spotlight.
+2. Type `Terminal`.
+3. Press Return to open **Terminal**. You do not need to use `sudo`.
+
+macOS already includes the `ssh` and `scp` commands used by this guide. No extra software is required.
+
 ## 5. Connect to the handheld
 
-In PowerShell, replace `YOUR_IP_ADDRESS` with the address from Step 3, then press Enter:
+In PowerShell on Windows or Terminal on macOS, replace `YOUR_IP_ADDRESS` with the address from Step 3, then press Enter:
 
-```powershell
+```sh
 ssh root@YOUR_IP_ADDRESS
 ```
 
 For example:
 
-```powershell
+```sh
 ssh root@192.168.1.84
 ```
 
@@ -67,7 +77,7 @@ root@ANBERNIC:~#
 
 ## 6. Download, verify, and install
 
-Copy the complete block below, paste it into the connected PowerShell window, and press Enter. The `&&` operators prevent later steps from running if a download or verification step fails.
+Copy the complete block below, paste it into the connected PowerShell or Terminal window, and press Enter. The `&&` operators prevent later steps from running if a download or verification step fails.
 
 ```sh
 cd /tmp && \
@@ -134,7 +144,7 @@ This is normal. Type `root` even though nothing appears, then press Enter.
 
 If the handheld's system card was recently reflashed, or the IP address now belongs to this handheld, run the following on the computer and reconnect:
 
-```powershell
+```sh
 ssh-keygen -R YOUR_IP_ADDRESS
 ```
 
@@ -145,10 +155,18 @@ Download both release files into the computer's Downloads folder:
 - `RG35XXPro-ROM-Library-v1.1.0.tar.gz`
 - `RG35XXPro-ROM-Library-v1.1.0.tar.gz.sha256`
 
-Then replace the IP address and run this in a separate PowerShell window:
+Then replace the IP address and run the matching command in a separate window.
+
+On Windows PowerShell:
 
 ```powershell
 scp "$HOME\Downloads\RG35XXPro-ROM-Library-v1.1.0.tar.gz" "$HOME\Downloads\RG35XXPro-ROM-Library-v1.1.0.tar.gz.sha256" root@YOUR_IP_ADDRESS:/tmp/
+```
+
+On macOS Terminal:
+
+```sh
+scp "$HOME/Downloads/RG35XXPro-ROM-Library-v1.1.0.tar.gz" "$HOME/Downloads/RG35XXPro-ROM-Library-v1.1.0.tar.gz.sha256" root@YOUR_IP_ADDRESS:/tmp/
 ```
 
 Reconnect over SSH, begin Step 6 at the `sha256sum` command, and continue only if verification reports `OK`.
@@ -178,4 +196,3 @@ sh uninstall.sh
 ```
 
 Uninstallation removes only the application, helper, launcher, and artwork. Games, settings, downloads, logs, and recoverable trash remain untouched.
-
